@@ -1,6 +1,8 @@
 import 'package:app/app.dart';
 import 'package:app/features/auth/login/viewmodel/login_model.dart';
 import 'package:app/features/auth/register/viewmodel/register_provider.dart';
+import 'package:app/features/dashboard/viewmodel/dashboard_provider.dart';
+import 'package:app/features/stock_detail/viewmodel/details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +33,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => LoginProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => DashboardProvider(),
+        ),
+
+
       ],
       child: const App(),
     );

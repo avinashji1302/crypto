@@ -1,7 +1,9 @@
+import 'package:app/features/home/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'core/app/app_viewmodel.dart';
 import 'features/auth/login/view/login_screen.dart';
+import 'features/dashboard/view/dashboard_screen.dart';
 
 
 
@@ -17,6 +19,7 @@ class App extends StatelessWidget {
 
       case AppStatus.initializing:
         return const MaterialApp(
+          debugShowCheckedModeBanner: false,
           home: Scaffold(
             body: Center(child: CircularProgressIndicator()),
           ),
@@ -31,7 +34,7 @@ class App extends StatelessWidget {
       case AppStatus.authenticated:
         return const MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: Placeholder(), // dashboard later
+          home: DashboardScreen(), // dashboard later
         );
     }
   }

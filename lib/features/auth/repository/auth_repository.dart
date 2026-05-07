@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../core/api/api_client.dart';
 import '../../../core/api/api_endponts.dart';
+import '../../../core/storage/secure_storage.dart';
 import '../login/model/login_model.dart';
 import '../register/model/register_model.dart';
 
@@ -9,6 +10,7 @@ import '../register/model/register_model.dart';
 class AuthRepository {
 
   final Dio _dio = ApiClient().dio;
+  final SecureStorage _storage = SecureStorage();
 
   /// REGISTER
   Future<RegisterModel> register({
@@ -32,7 +34,7 @@ class AuthRepository {
   }
 
   // /// LOGIN
-  Future<(dynamic, UserModel)> login({
+  Future<LoginResponseModel> login({
     required String email,
     required String password,
   }) async {
@@ -45,11 +47,22 @@ class AuthRepository {
       },
     );
 
-    final token = response.data["accessToken"];
-    final user = UserModel.fromJson(response.data["user"]);
+    // final token = response.data["accessToken"];
+    // final user = UserModel.fromJson(response.data["user"]);
+    //
+    // debugPrint("response is : $response ${token} $user");
+    //
+    // return (token, user);
 
-    debugPrint("response is : $response ${token} $user");
+    // Parse the full response
+    final loginResponse = LoginResponseModel.fromJson(response.data);
 
-    return (token, user);
+    debugPrint("response is : ${loginResponse.user} >>>>>>>. ${loginResponse.accessToken}");
+
+    // ✅ Save token right here in repository
+    await _storage.saveToken(loginResponse.accessToken);
+    // await _storage.saveUser(loginResponse.user);
+
+    return loginResponse;
   }
 }
